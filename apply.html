@@ -519,7 +519,7 @@
     <script>
         // Initialize EmailJS with your public key
         (function () {
-            emailjs.init("oqM8wnIWUsaljaSbX"); // Replace with your actual EmailJS public key
+            emailjs.init("ivxea4uDo8A7Udpx_"); // Replace with your actual EmailJS public key
         })();
 
         var currentStep = 1;
@@ -593,75 +593,6 @@
         }
 
         // Fixed: Properly structured form submission handler
-
-        // Pre-qualification score calculation
-        function calculatePrequalScore() {
-            var score = 50; // Base score
-            var creditScore = gv('credit_score_range');
-            var investorType = gv('investor_type');
-            var loanAmount = Number(gv('loan_amount')) || 0;
-            var downPayment = Number(gv('down_payment_available')) || 0;
-            var purchasePrice = Number(gv('purchase_price')) || 1;
-
-            // Credit score impact
-            if (creditScore === '760+') score += 25;
-            else if (creditScore === '720-759') score += 20;
-            else if (creditScore === '680-719') score += 15;
-            else if (creditScore === '640-679') score += 5;
-            else if (creditScore === '600-639') score -= 5;
-            else if (creditScore === 'below_600') score -= 15;
-
-            // Down payment impact (LTV ratio)
-            var downPaymentPercent = (downPayment / purchasePrice) * 100;
-            if (downPaymentPercent >= 25) score += 15;
-            else if (downPaymentPercent >= 20) score += 10;
-            else if (downPaymentPercent >= 15) score += 5;
-            else if (downPaymentPercent >= 10) score += 0;
-            else score -= 10;
-
-            // Experience bonus
-            if (investorType === 'experienced') {
-                var deals = Number(gv('deals_completed')) || 0;
-                if (deals >= 10) score += 10;
-                else if (deals >= 5) score += 5;
-            }
-
-            // Cap score between 0-100
-            return Math.max(0, Math.min(100, score));
-        }
-
-        function displayScore(score) {
-            var scoreDisplay = document.getElementById('scoreDisplay');
-            var scoreMsg = document.getElementById('scoreMsg');
-
-            var rating, color, message;
-            if (score >= 80) {
-                rating = 'Excellent';
-                color = '#22C55E';
-                message = 'Your application looks strong! Based on your profile, you have excellent chances of approval. Our team will review and contact you within 24 hours with a term sheet.';
-            } else if (score >= 60) {
-                rating = 'Good';
-                color = '#EAB308';
-                message = 'Your application shows good potential. We may need some additional documentation, but approval is likely. Expect to hear from us within 24-48 hours.';
-            } else if (score >= 40) {
-                rating = 'Fair';
-                color = '#F97316';
-                message = 'We have received your application. There may be some challenges to address, but we have options available. Our team will contact you to discuss the best path forward.';
-            } else {
-                rating = 'Needs Review';
-                color = '#EF4444';
-                message = 'Thank you for your application. We will need to review your situation more carefully, but we may have alternative programs that could work for you. We will be in touch within 48 hours.';
-            }
-
-            scoreDisplay.innerHTML = '<div style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;padding:20px;border-radius:16px;margin-bottom:16px;">' +
-                '<div style="font-size:0.875rem;font-weight:600;opacity:0.9;margin-bottom:4px;">Pre-Qualification Score</div>' +
-                '<div style="font-size:3rem;font-weight:800;">' + score + '/100</div>' +
-                '<div style="font-size:1.125rem;font-weight:700;margin-top:8px;">' + rating + '</div>' +
-                '</div>';
-
-            scoreMsg.textContent = message;
-        }
-
         document.getElementById('applyForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             var btn = document.getElementById('submitBtn');
@@ -698,17 +629,13 @@
 
             try {
 
-                await emailjs.send("service_mdz8r89", "template_cj4wsi8", payload);
+                await emailjs.send("service_tnbwjv7", "template_awids2p", payload);
 
                 // Show success message and hide form
                 document.getElementById('applyForm').style.display = 'none';
                 document.getElementById('stepTabs').style.display = 'none';
                 document.getElementById('progressBar').parentElement.style.display = 'none';
                 document.getElementById('successMsg').style.display = 'block';
-
-                // Calculate and display pre-qualification score
-                var score = calculatePrequalScore();
-                displayScore(score);
 
             } catch (error) {
                 console.error('EmailJS Error:', error);
@@ -721,7 +648,7 @@
 
     </script>
     <div class="text-center py-10">
-        <a href="https://mdhcielolending.com/" class="btn-gold inline-flex items-center gap-2 px-5 py-2 text-base"
+        <a href="https://www.mdhcielolending.com/" class="btn-gold inline-flex items-center gap-2 px-5 py-2 text-base"
             style="text-decoration:none">
             <i class="fas fa-arrow-left"></i> Back to Main Site
         </a>
