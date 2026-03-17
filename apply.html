@@ -504,7 +504,7 @@
   <script>
     // Initialize EmailJS with your public key
     (function () {
-      emailjs.init("p-9a2h2ilauypRY-d"); // Replace with your actual EmailJS public key
+      emailjs.init("oqM8wnIWUsaljaSbX"); // Replace with your actual EmailJS public key
     })();
 
     var currentStep = 1;
@@ -614,18 +614,7 @@
 
       try {
 
-        await emailjs.send("service_ylfwjch", "template_fy7uteh", payload);
-
-        // Option 2: Send to your own API endpoint
-        const res = await fetch('/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error('Server error');
-
-        const data = await res.json();
+        await emailjs.send("service_mdz8r89", "template_cj4wsi8", payload);
 
         // Show success message
         document.getElementById('applyForm').style.display = 'none';
