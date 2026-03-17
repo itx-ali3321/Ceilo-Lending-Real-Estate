@@ -616,29 +616,6 @@
 
         await emailjs.send("service_mdz8r89", "template_cj4wsi8", payload);
 
-        // Show success message
-        document.getElementById('applyForm').style.display = 'none';
-        document.getElementById('successMsg').style.display = 'block';
-
-        // Display score if returned
-        var score = data.score || 0;
-        if (score > 0) {
-          document.getElementById('scoreDisplay').innerHTML =
-            '<div class="text-4xl font-black" style="color:var(--gold)">' + score + '</div>';
-          document.getElementById('scoreMsg').textContent =
-            'Your application has been scored. We will contact you shortly.';
-        } else {
-          document.getElementById('scoreMsg').textContent =
-            'Thank you for your application. Our team will review it and contact you within 24-48 hours.';
-        }
-
-      } catch (err) {
-        console.error('Submission error:', err);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-rocket mr-2"></i>Submit Application';
-        alert('There was an error submitting your application. Please try again or contact us directly at (949) 969-8829.');
-      }
-    });
   </script>
   <div class="text-center py-10">
     <a href="https://mdhcielolending.com/" class="btn-gold inline-flex items-center gap-2 px-5 py-2 text-base"
