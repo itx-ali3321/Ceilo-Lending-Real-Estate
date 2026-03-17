@@ -1,628 +1,731 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Apply – Cielo Lending Source</title>
-  <link rel="icon" type="image/png" href="favicon.ico">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-  <!-- Updated EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Apply – Cielo Lending Source</title>
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Updated EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
 
-    :root {
-      --gold: #C9A84C;
-      --gold-light: #E2C47A;
-      --gold-dark: #A07830;
-      --navy: #0D1F3C;
-      --navy-mid: #162B54;
-      --gray-50: #F8F9FA;
-      --gray-200: #E2E8F0;
-      --text-body: #374151;
-      --text-light: #6B7280
-    }
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #E2C47A;
+            --gold-dark: #A07830;
+            --navy: #0D1F3C;
+            --navy-mid: #162B54;
+            --gray-50: #F8F9FA;
+            --gray-200: #E2E8F0;
+            --text-body: #374151;
+            --text-light: #6B7280
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--gray-50);
-      color: var(--text-body)
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--text-body)
+        }
 
-    .form-input,
-    .form-select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 10px;
-      font-size: 0.9rem;
-      transition: border 0.2s;
-      outline: none;
-      font-family: inherit;
-      background: #fff
-    }
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: border 0.2s;
+            outline: none;
+            font-family: inherit;
+            background: #fff
+        }
 
-    .form-input:focus,
-    .form-select:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1)
-    }
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1)
+        }
 
-    .form-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 6px;
-      display: block
-    }
+        .form-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 6px;
+            display: block
+        }
 
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: #fff;
-      font-weight: 700;
-      border-radius: 12px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 15px rgba(201, 168, 76, 0.35);
-      cursor: pointer;
-      border: none
-    }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #fff;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.35);
+            cursor: pointer;
+            border: none
+        }
 
-    .btn-gold:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5)
-    }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5)
+        }
 
-    .step-tab {
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 2px solid transparent;
-      color: var(--text-light)
-    }
+        .step-tab {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            color: var(--text-light)
+        }
 
-    .step-tab.active {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: #000;
-      border-color: transparent
-    }
+        .step-tab.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #000;
+            border-color: transparent
+        }
 
-    .step-tab.done {
-      border-color: var(--gold);
-      color: var(--gold-dark)
-    }
+        .step-tab.done {
+            border-color: var(--gold);
+            color: var(--gold-dark)
+        }
 
-    .section-label {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold);
-      background: rgba(201, 168, 76, 0.1);
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      padding: 5px 14px;
-      border-radius: 999px
-    }
-  </style>
+        .section-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            padding: 5px 14px;
+            border-radius: 999px
+        }
+    </style>
+    <base target="_blank">
 </head>
 
 <body>
-  <!-- Top bar -->
-  <div
-    style="background:linear-gradient(135deg,#080808,#111111);padding:16px 24px;border-bottom:1px solid rgba(201,168,76,0.15)">
-    <div class="max-w-5xl mx-auto flex items-center justify-between">
-      <a href="/" style="text-decoration:none;display:flex;align-items:center;">
-        <!-- Fixed: Changed to placeholder logo path -->
-        <img src="logo1.png" alt="Cielo Lending Source"
-          style="height:100px;width:auto;filter:drop-shadow(0 2px 10px rgba(201,168,76,0.4));">
-      </a>
-      <div style="display:flex;align-items:center;gap:16px">
-        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:rgba(255,255,255,0.7)">
-          <i class="fas fa-lock text-xs" style="color:var(--gold)"></i> 256-bit Encrypted
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:rgba(255,255,255,0.7)">
-          <i class="fas fa-shield-alt text-xs" style="color:var(--gold)"></i> No Credit Pull
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="max-w-3xl mx-auto px-4 py-12">
-    <!-- Header -->
-    <div class="text-center mb-8">
-      <div class="section-label mb-3">Pre-Qualification</div>
-      <h1 class="text-3xl font-black mb-2" style="color:#000;">Get Pre-Qualified in Minutes</h1>
-      <p class="text-sm" style="color:var(--text-light)">No credit pull. No commitment. Get a term sheet in 24–48 hours.
-        &nbsp;<a href="/privacy" style="color:#A07830;text-decoration:underline">Privacy Policy</a></p>
-      <div class="flex flex-wrap justify-center gap-4 mt-3">
-        <a href="tel:+19499698829" class="inline-flex items-center gap-1.5 text-sm font-semibold"
-          style="color:#A07830;text-decoration:none">
-          <i class="fas fa-phone-alt text-xs"></i>(949) 969-8829
-        </a>
-        <span style="color:#A07830">|</span>
-        <a href="mailto:martini@mdhcielolending.com" class="flex items-center gap-2 text-sm font-semibold"
-          style="color:#A07830;text-decoration:none">
-          <i class="fas fa-envelope text-xs"></i> martini@mdhcielolending.com
-        </a>
-        <span style="color:#A07830">|</span>
-        <a href="mailto:info@mdhcielolending.com" class="flex items-center gap-2 text-sm font-semibold"
-          style="color:#A07830;text-decoration:none">
-          <i class="fas fa-envelope text-xs"></i> info@mdhcielolending.com
-        </a>
-        <span style="color:#A07830">|</span>
-        <a href="/privacy" style="color:#A07830;text-decoration:underline;font-weight:600">Privacy Policy</a>
-      </div>
-    </div>
-
-    <!-- Step tabs -->
-    <div class="flex justify-center gap-2 mb-8 flex-wrap" id="stepTabs">
-      <div class="step-tab active" onclick="goStep(1)" id="tab1"><i class="fas fa-user mr-1"></i> About You</div>
-      <div class="step-tab" onclick="goStep(2)" id="tab2"><i class="fas fa-home mr-1"></i> The Deal</div>
-      <div class="step-tab" onclick="goStep(3)" id="tab3"><i class="fas fa-dollar-sign mr-1"></i> Financials</div>
-      <div class="step-tab" onclick="goStep(4)" id="tab4"><i class="fas fa-check mr-1"></i> Review</div>
-    </div>
-
-    <!-- Progress bar -->
-    <div class="rounded-full mb-8" style="background:var(--gray-200);height:6px">
-      <div id="progressBar" class="rounded-full transition-all duration-500"
-        style="height:6px;background:linear-gradient(90deg,var(--gold),var(--gold-light));width:25%"></div>
-    </div>
-
-    <form id="applyForm">
-      <!-- ── Step 1: About You ── -->
-      <div id="step1" class="bg-white rounded-2xl p-8 shadow-sm" style="border:1px solid var(--gray-200)">
-        <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-user mr-2"
-            style="color:var(--gold)"></i>Tell Us About Yourself</h2>
-        <div class="grid grid-cols-2 gap-5 mb-5">
-          <div><label class="form-label">First Name *</label><input class="form-input" id="first_name"
-              placeholder="John" required></div>
-          <div><label class="form-label">Last Name *</label><input class="form-input" id="last_name" placeholder="Smith"
-              required></div>
-        </div>
-        <div class="grid grid-cols-2 gap-5 mb-5">
-          <div><label class="form-label">Email Address *</label><input class="form-input" type="email" id="email"
-              placeholder="john@example.com" required></div>
-          <div><label class="form-label">Phone Number *</label><input class="form-input" type="tel" id="phone"
-              placeholder="(555) 000-0000" required></div>
-        </div>
-        <div class="mb-5">
-          <label class="form-label">Borrower Type *</label>
-          <select class="form-select" id="investor_type" onchange="toggleBorrowerType(this.value)">
-            <option value="">Select borrower type</option>
-            <option value="primary_home">Primary Home Buyer</option>
-            <option value="first_time">First-Time Investor</option>
-            <option value="experienced">Experienced Investor</option>
-          </select>
-        </div>
-        <!-- Investor experience fields (shown for investors only) -->
-        <div id="expFields" style="display:none" class="grid grid-cols-2 gap-5 mb-5">
-          <div><label class="form-label">Years Investing</label><input class="form-input" type="number"
-              id="experience_years" placeholder="5" min="0"></div>
-          <div><label class="form-label">Deals Completed</label><input class="form-input" type="number"
-              id="deals_completed" placeholder="10" min="0"></div>
-        </div>
-        <!-- Primary home buyer fields (shown for primary home only) -->
-        <div id="primaryHomeFields" style="display:none" class="mb-5">
-          <div class="grid grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="form-label">Employment Status *</label>
-              <select class="form-select" id="employment_status">
-                <option value="">Select status</option>
-                <option value="employed_w2">Employed (W-2)</option>
-                <option value="self_employed">Self-Employed / 1099</option>
-                <option value="retired">Retired</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">Annual Household Income</label>
-              <input class="form-input" type="number" id="annual_income" placeholder="85000">
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-5">
-            <div>
-              <label class="form-label">First-Time Home Buyer?</label>
-              <select class="form-select" id="first_time_buyer">
-                <option value="">Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">Loan Program Interest</label>
-              <select class="form-select" id="home_loan_program">
-                <option value="">Select program</option>
-                <option value="conventional">Conventional</option>
-                <option value="fha">FHA</option>
-                <option value="va">VA Loan</option>
-                <option value="jumbo">Jumbo</option>
-                <option value="not_sure">Not Sure – Need Guidance</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="goStep(2)" class="btn-gold w-full py-4 text-base mt-2">
-          Continue to Deal Details <i class="fas fa-arrow-right ml-2"></i>
-        </button>
-      </div>
-
-      <!-- ── Step 2: The Deal ── -->
-      <!-- Fixed: Removed duplicate style attribute -->
-      <div id="step2" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-        <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-home mr-2"
-            style="color:var(--gold)"></i>Tell Us About the Deal</h2>
-        <div class="grid grid-cols-2 gap-5 mb-5">
-          <div>
-            <label class="form-label">Loan Type *</label>
-            <select class="form-select" id="loan_type" onchange="toggleArvField(this.value)">
-              <option value="">Select loan type</option>
-              <option value="primary_home">Primary Home Purchase</option>
-              <option value="fix_flip">Fix & Flip</option>
-              <option value="dscr">DSCR Rental</option>
-              <option value="ground_up">Ground Up Construction</option>
-              <option value="bridge">Bridge Loan</option>
-              <option value="multifamily">Multi-Family</option>
-              <option value="commercial">Commercial Property</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Property Type *</label>
-            <select class="form-select" id="property_type">
-              <option value="">Select property type</option>
-              <option value="sfr">Single Family</option>
-              <option value="condo">Condo / Townhome</option>
-              <option value="2-4_units">2–4 Units</option>
-              <option value="5plus_units">5+ Units</option>
-              <option value="mixed_use">Mixed Use</option>
-              <option value="commercial">Commercial</option>
-              <option value="vacant_land">Vacant Land</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-5">
-          <label class="form-label">Property Address (if known)</label>
-          <input class="form-input" id="property_address" placeholder="123 Main St, City, State">
-        </div>
-        <div class="mb-5">
-          <label class="form-label">Property State *</label>
-          <select class="form-select" id="property_state">
-            <option value="">Select state</option>
-            <option value="AL">AL</option>
-            <option value="AK">AK</option>
-            <option value="AZ">AZ</option>
-            <option value="AR">AR</option>
-            <option value="CA">CA</option>
-            <option value="CO">CO</option>
-            <option value="CT">CT</option>
-            <option value="DE">DE</option>
-            <option value="FL">FL</option>
-            <option value="GA">GA</option>
-            <option value="HI">HI</option>
-            <option value="ID">ID</option>
-            <option value="IL">IL</option>
-            <option value="IN">IN</option>
-            <option value="IA">IA</option>
-            <option value="KS">KS</option>
-            <option value="KY">KY</option>
-            <option value="LA">LA</option>
-            <option value="ME">ME</option>
-            <option value="MD">MD</option>
-            <option value="MA">MA</option>
-            <option value="MI">MI</option>
-            <option value="MN">MN</option>
-            <option value="MS">MS</option>
-            <option value="MO">MO</option>
-            <option value="MT">MT</option>
-            <option value="NE">NE</option>
-            <option value="NV">NV</option>
-            <option value="NH">NH</option>
-            <option value="NJ">NJ</option>
-            <option value="NM">NM</option>
-            <option value="NY">NY</option>
-            <option value="NC">NC</option>
-            <option value="ND">ND</option>
-            <option value="OH">OH</option>
-            <option value="OK">OK</option>
-            <option value="OR">OR</option>
-            <option value="PA">PA</option>
-            <option value="RI">RI</option>
-            <option value="SC">SC</option>
-            <option value="SD">SD</option>
-            <option value="TN">TN</option>
-            <option value="TX">TX</option>
-            <option value="UT">UT</option>
-            <option value="VT">VT</option>
-            <option value="VA">VA</option>
-            <option value="WA">WA</option>
-            <option value="WV">WV</option>
-            <option value="WI">WI</option>
-            <option value="WY">WY</option>
-          </select>
-        </div>
-        <div id="arvField" style="display:none" class="mb-5">
-          <label class="form-label">After-Repair Value (ARV)</label>
-          <input class="form-input" type="number" id="arv" placeholder="350000">
-        </div>
-        <div class="mb-5">
-          <label class="form-label">Estimated Project Timeline</label>
-          <select class="form-select" id="project_timeline">
-            <option value="">Select timeline</option>
-            <option value="asap">ASAP (under contract)</option>
-            <option value="1_30">1–30 days</option>
-            <option value="30_60">30–60 days</option>
-            <option value="60_plus">60+ days (planning)</option>
-          </select>
-        </div>
-        <div class="flex gap-3">
-          <button type="button" onclick="goStep(1)" class="py-4 px-6 rounded-xl font-bold text-base transition"
-            style="background:var(--gray-200);color:var(--navy)">
-            <i class="fas fa-arrow-left mr-2"></i> Back
-          </button>
-          <button type="button" onclick="goStep(3)" class="btn-gold py-4 flex-1 text-base">
-            Continue to Financials <i class="fas fa-arrow-right ml-2"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- ── Step 3: Financials ── -->
-      <!-- Fixed: Removed duplicate style attribute -->
-      <div id="step3" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-        <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-dollar-sign mr-2"
-            style="color:var(--gold)"></i>Loan & Financial Details</h2>
-        <div class="grid grid-cols-2 gap-5 mb-5">
-          <div>
-            <label class="form-label">Loan Amount Needed *</label>
-            <input class="form-input" type="number" id="loan_amount" placeholder="250000" min="50000">
-          </div>
-          <div>
-            <label class="form-label">Purchase Price</label>
-            <input class="form-input" type="number" id="purchase_price" placeholder="200000">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-5 mb-5">
-          <div>
-            <label class="form-label">Renovation Budget</label>
-            <input class="form-input" type="number" id="renovation_budget" placeholder="50000">
-          </div>
-          <div>
-            <label class="form-label">Down Payment / Equity Available</label>
-            <input class="form-input" type="number" id="down_payment_available" placeholder="50000">
-          </div>
-        </div>
-        <div class="mb-5">
-          <label class="form-label">Credit Score Range *</label>
-          <select class="form-select" id="credit_score_range">
-            <option value="">Select range</option>
-            <option value="760+">760+ (Excellent)</option>
-            <option value="720-759">720–759 (Very Good)</option>
-            <option value="680-719">680–719 (Good)</option>
-            <option value="640-679">640–679 (Fair)</option>
-            <option value="600-639">600–639 (Below Average)</option>
-            <option value="below_600">Below 600</option>
-          </select>
-        </div>
-        <!-- Primary home buyer: monthly debts -->
-        <div id="primaryFinanceFields" style="display:none">
-          <div class="grid grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="form-label">Monthly Debt Payments</label>
-              <input class="form-input" type="number" id="monthly_debts" placeholder="500">
-              <p class="text-xs mt-1" style="color:var(--text-light)">Car, student loans, credit cards, etc.</p>
-            </div>
-            <div>
-              <label class="form-label">Years at Current Job</label>
-              <input class="form-input" type="number" id="years_employed" placeholder="3" min="0">
-            </div>
-          </div>
-        </div>
-        <div class="flex gap-3">
-          <button type="button" onclick="goStep(2)" class="py-4 px-6 rounded-xl font-bold text-base transition"
-            style="background:var(--gray-200);color:var(--navy)">
-            <i class="fas fa-arrow-left mr-2"></i> Back
-          </button>
-          <button type="button" onclick="goStep(4)" class="btn-gold py-4 flex-1 text-base">
-            Review Application <i class="fas fa-arrow-right ml-2"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- ── Step 4: Review & Submit ── -->
-      <!-- Fixed: Removed duplicate style attribute -->
-      <div id="step4" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-        <h2 class="text-xl font-black mb-2" style="color:var(--navy)"><i class="fas fa-check-circle mr-2"
-            style="color:var(--gold)"></i>Review & Submit</h2>
-        <p class="text-sm mb-6" style="color:var(--text-light)">Please review your information before submitting.</p>
-        <div id="reviewSummary" class="rounded-2xl p-6 mb-6"
-          style="background:var(--gray-50);border:1px solid var(--gray-200)"></div>
-        <div class="rounded-2xl p-5 mb-6"
-          style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25)">
-          <div class="flex items-start gap-3">
-            <i class="fas fa-info-circle mt-0.5" style="color:var(--gold)"></i>
-            <p class="text-sm" style="color:var(--navy)">By submitting, you agree that Cielo Lending Source may contact
-              you via phone and email regarding your application. <strong>No credit pull will be made at this
-                stage.</strong> Your information is protected — read our <a href="/privacy" target="_blank"
-                style="color:var(--gold-dark);font-weight:700;text-decoration:underline">Privacy Policy</a>.</p>
-          </div>
-          <div class="flex flex-wrap gap-4 mt-3 pt-3" style="border-top:1px solid rgba(201,168,76,0.15)">
-            <a href="tel:+19499698829" class="inline-flex items-center gap-1.5 text-xs font-semibold"
-              style="color:var(--gold-dark);text-decoration:none">
-              <i class="fas fa-phone-alt"></i>(949) 969-8829
+    <!-- Top bar -->
+    <div
+        style="background:linear-gradient(135deg,#080808,#111111);padding:16px 24px;border-bottom:1px solid rgba(201,168,76,0.15)">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <a href="/" style="text-decoration:none;display:flex;align-items:center;">
+                <!-- Fixed: Changed to placeholder logo path -->
+                <img src="logo1.png" alt="Cielo Lending Source"
+                    style="height:100px;width:auto;filter:drop-shadow(0 2px 10px rgba(201,168,76,0.4));">
             </a>
-            <a href="mailto:martini@mdhcielolending.com" class="inline-flex items-center gap-1.5 text-xs font-semibold"
-              style="color:var(--gold-dark);text-decoration:none">
-              <i class="fas fa-envelope"></i>martini@mdhcielolending.com
-            </a>
-            <a href="mailto:info@mdhcielolending.com" class="inline-flex items-center gap-1.5 text-xs font-semibold"
-              style="color:var(--gold-dark);text-decoration:none">
-              <i class="fas fa-envelope"></i>info@mdhcielolending.com
-            </a>
-          </div>
+            <div style="display:flex;align-items:center;gap:16px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:rgba(255,255,255,0.7)">
+                    <i class="fas fa-lock text-xs" style="color:var(--gold)"></i> 256-bit Encrypted
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:rgba(255,255,255,0.7)">
+                    <i class="fas fa-shield-alt text-xs" style="color:var(--gold)"></i> No Credit Pull
+                </div>
+            </div>
         </div>
-        <div class="flex gap-3">
-          <button type="button" onclick="goStep(3)" class="py-4 px-6 rounded-xl font-bold text-base transition"
-            style="background:var(--gray-200);color:var(--navy)">
-            <i class="fas fa-arrow-left mr-2"></i> Back
-          </button>
-          <button type="submit" id="submitBtn" class="btn-gold py-4 flex-1 text-base">
-            <i class="fas fa-rocket mr-2"></i> Submit Application
-          </button>
-        </div>
-      </div>
-    </form>
-
-    <!-- Success message -->
-    <div id="successMsg" style="display:none" class="bg-white rounded-2xl p-10 text-center shadow-sm">
-      <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-        style="background:linear-gradient(135deg,var(--gold),var(--gold-dark))">
-        <i class="fas fa-check text-white text-3xl"></i>
-      </div>
-      <h2 class="text-3xl font-black mb-3" style="color:var(--navy)">Application Received!</h2>
-      <div id="scoreDisplay" class="mb-4"></div>
-      <p id="scoreMsg" class="text-base leading-relaxed mb-6" style="color:var(--text-light)"></p>
-      <div class="flex flex-wrap justify-center gap-4 mb-8 text-sm">
-        <a href="tel:+19499698829" class="inline-flex items-center gap-2 font-semibold px-4 py-2 rounded-xl"
-          style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold-dark);text-decoration:none">
-          <i class="fas fa-phone-alt"></i>(949) 969-8829
-        </a>
-      </div>
-      <a href="/" class="btn-gold inline-flex items-center gap-2 px-8 py-4 text-base" style="text-decoration:none">
-        <i class="fas fa-home"></i> Back to Home
-      </a>
     </div>
-  </div>
 
-  <script>
-    // Initialize EmailJS with your public key
-    (function () {
-      emailjs.init("oqM8wnIWUsaljaSbX"); // Replace with your actual EmailJS public key
-    })();
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="section-label mb-3">Pre-Qualification</div>
+            <h1 class="text-3xl font-black mb-2" style="color:#000;">Get Pre-Qualified in Minutes</h1>
+            <p class="text-sm" style="color:var(--text-light)">No credit pull. No commitment. Get a term sheet in 24–48
+                hours.
+                &nbsp;<a href="/privacy" style="color:#A07830;text-decoration:underline">Privacy Policy</a></p>
+            <div class="flex flex-wrap justify-center gap-4 mt-3">
+                <a href="tel:+19499698829" class="inline-flex items-center gap-1.5 text-sm font-semibold"
+                    style="color:#A07830;text-decoration:none">
+                    <i class="fas fa-phone-alt text-xs"></i>(949) 969-8829
+                </a>
+                <span style="color:#A07830">|</span>
+                <a href="mailto:martini@mdhcielolending.com" class="flex items-center gap-2 text-sm font-semibold"
+                    style="color:#A07830;text-decoration:none">
+                    <i class="fas fa-envelope text-xs"></i> martini@mdhcielolending.com
+                </a>
+                <span style="color:#A07830">|</span>
+                <a href="mailto:info@mdhcielolending.com" class="flex items-center gap-2 text-sm font-semibold"
+                    style="color:#A07830;text-decoration:none">
+                    <i class="fas fa-envelope text-xs"></i> info@mdhcielolending.com
+                </a>
+                <span style="color:#A07830">|</span>
+                <a href="/privacy" style="color:#A07830;text-decoration:underline;font-weight:600">Privacy Policy</a>
+            </div>
+        </div>
 
-    var currentStep = 1;
-    var pcts = ['25%', '50%', '75%', '100%'];
+        <!-- Step tabs -->
+        <div class="flex justify-center gap-2 mb-8 flex-wrap" id="stepTabs">
+            <div class="step-tab active" onclick="goStep(1)" id="tab1"><i class="fas fa-user mr-1"></i> About You</div>
+            <div class="step-tab" onclick="goStep(2)" id="tab2"><i class="fas fa-home mr-1"></i> The Deal</div>
+            <div class="step-tab" onclick="goStep(3)" id="tab3"><i class="fas fa-dollar-sign mr-1"></i> Financials</div>
+            <div class="step-tab" onclick="goStep(4)" id="tab4"><i class="fas fa-check mr-1"></i> Review</div>
+        </div>
 
-    function goStep(n) {
-      document.getElementById('step' + currentStep).style.display = 'none';
-      document.getElementById('tab' + currentStep).classList.remove('active');
-      document.getElementById('tab' + currentStep).classList.add('done');
-      currentStep = n;
-      document.getElementById('step' + currentStep).style.display = 'block';
-      document.getElementById('tab' + currentStep).classList.add('active');
-      document.getElementById('progressBar').style.width = pcts[n - 1];
-      if (n === 4) buildReview();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+        <!-- Progress bar -->
+        <div class="rounded-full mb-8" style="background:var(--gray-200);height:6px">
+            <div id="progressBar" class="rounded-full transition-all duration-500"
+                style="height:6px;background:linear-gradient(90deg,var(--gold),var(--gold-light));width:25%"></div>
+        </div>
 
-    function toggleBorrowerType(v) {
-      // Investor experience fields
-      document.getElementById('expFields').style.display = v === 'experienced' ? 'grid' : 'none';
-      // Primary home buyer fields
-      document.getElementById('primaryHomeFields').style.display = v === 'primary_home' ? 'block' : 'none';
-      // Auto-set loan type for primary home
-      if (v === 'primary_home') {
-        document.getElementById('loan_type').value = 'primary_home';
-        toggleArvField('primary_home');
-        document.getElementById('primaryFinanceFields').style.display = 'block';
-      } else {
-        if (document.getElementById('loan_type').value === 'primary_home') document.getElementById('loan_type').value = '';
-        document.getElementById('primaryFinanceFields').style.display = 'none';
-      }
-    }
+        <form id="applyForm">
+            <!-- ── Step 1: About You ── -->
+            <div id="step1" class="bg-white rounded-2xl p-8 shadow-sm" style="border:1px solid var(--gray-200)">
+                <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-user mr-2"
+                        style="color:var(--gold)"></i>Tell Us About Yourself</h2>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div><label class="form-label">First Name *</label><input class="form-input" id="first_name"
+                            placeholder="John" required></div>
+                    <div><label class="form-label">Last Name *</label><input class="form-input" id="last_name"
+                            placeholder="Smith" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div><label class="form-label">Email Address *</label><input class="form-input" type="email"
+                            id="email" placeholder="john@example.com" required></div>
+                    <div><label class="form-label">Phone Number *</label><input class="form-input" type="tel" id="phone"
+                            placeholder="(555) 000-0000" required></div>
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">Borrower Type *</label>
+                    <select class="form-select" id="investor_type" onchange="toggleBorrowerType(this.value)">
+                        <option value="">Select borrower type</option>
+                        <option value="primary_home">Primary Home Buyer</option>
+                        <option value="first_time">First-Time Investor</option>
+                        <option value="experienced">Experienced Investor</option>
+                    </select>
+                </div>
+                <!-- Investor experience fields (shown for investors only) -->
+                <div id="expFields" style="display:none" class="grid grid-cols-2 gap-5 mb-5">
+                    <div><label class="form-label">Years Investing</label><input class="form-input" type="number"
+                            id="experience_years" placeholder="5" min="0"></div>
+                    <div><label class="form-label">Deals Completed</label><input class="form-input" type="number"
+                            id="deals_completed" placeholder="10" min="0"></div>
+                </div>
+                <!-- Primary home buyer fields (shown for primary home only) -->
+                <div id="primaryHomeFields" style="display:none" class="mb-5">
+                    <div class="grid grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="form-label">Employment Status *</label>
+                            <select class="form-select" id="employment_status">
+                                <option value="">Select status</option>
+                                <option value="employed_w2">Employed (W-2)</option>
+                                <option value="self_employed">Self-Employed / 1099</option>
+                                <option value="retired">Retired</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Annual Household Income</label>
+                            <input class="form-input" type="number" id="annual_income" placeholder="85000">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="form-label">First-Time Home Buyer?</label>
+                            <select class="form-select" id="first_time_buyer">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Loan Program Interest</label>
+                            <select class="form-select" id="home_loan_program">
+                                <option value="">Select program</option>
+                                <option value="conventional">Conventional</option>
+                                <option value="fha">FHA</option>
+                                <option value="va">VA Loan</option>
+                                <option value="jumbo">Jumbo</option>
+                                <option value="not_sure">Not Sure – Need Guidance</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="goStep(2)" class="btn-gold w-full py-4 text-base mt-2">
+                    Continue to Deal Details <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
 
-    function toggleExp(v) { toggleBorrowerType(v); }
+            <!-- ── Step 2: The Deal ── -->
+            <!-- Fixed: Removed duplicate style attribute -->
+            <div id="step2" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-home mr-2"
+                        style="color:var(--gold)"></i>Tell Us About the Deal</h2>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label class="form-label">Loan Type *</label>
+                        <select class="form-select" id="loan_type" onchange="toggleArvField(this.value)">
+                            <option value="">Select loan type</option>
+                            <option value="primary_home">Primary Home Purchase</option>
+                            <option value="fix_flip">Fix & Flip</option>
+                            <option value="dscr">DSCR Rental</option>
+                            <option value="ground_up">Ground Up Construction</option>
+                            <option value="bridge">Bridge Loan</option>
+                            <option value="multifamily">Multi-Family</option>
+                            <option value="commercial">Commercial Property</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Property Type *</label>
+                        <select class="form-select" id="property_type">
+                            <option value="">Select property type</option>
+                            <option value="sfr">Single Family</option>
+                            <option value="condo">Condo / Townhome</option>
+                            <option value="2-4_units">2–4 Units</option>
+                            <option value="5plus_units">5+ Units</option>
+                            <option value="mixed_use">Mixed Use</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="vacant_land">Vacant Land</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">Property Address (if known)</label>
+                    <input class="form-input" id="property_address" placeholder="123 Main St, City, State">
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">Property State *</label>
+                    <select class="form-select" id="property_state">
+                        <option value="">Select state</option>
+                        <option value="AL">AL</option>
+                        <option value="AK">AK</option>
+                        <option value="AZ">AZ</option>
+                        <option value="AR">AR</option>
+                        <option value="CA">CA</option>
+                        <option value="CO">CO</option>
+                        <option value="CT">CT</option>
+                        <option value="DE">DE</option>
+                        <option value="FL">FL</option>
+                        <option value="GA">GA</option>
+                        <option value="HI">HI</option>
+                        <option value="ID">ID</option>
+                        <option value="IL">IL</option>
+                        <option value="IN">IN</option>
+                        <option value="IA">IA</option>
+                        <option value="KS">KS</option>
+                        <option value="KY">KY</option>
+                        <option value="LA">LA</option>
+                        <option value="ME">ME</option>
+                        <option value="MD">MD</option>
+                        <option value="MA">MA</option>
+                        <option value="MI">MI</option>
+                        <option value="MN">MN</option>
+                        <option value="MS">MS</option>
+                        <option value="MO">MO</option>
+                        <option value="MT">MT</option>
+                        <option value="NE">NE</option>
+                        <option value="NV">NV</option>
+                        <option value="NH">NH</option>
+                        <option value="NJ">NJ</option>
+                        <option value="NM">NM</option>
+                        <option value="NY">NY</option>
+                        <option value="NC">NC</option>
+                        <option value="ND">ND</option>
+                        <option value="OH">OH</option>
+                        <option value="OK">OK</option>
+                        <option value="OR">OR</option>
+                        <option value="PA">PA</option>
+                        <option value="RI">RI</option>
+                        <option value="SC">SC</option>
+                        <option value="SD">SD</option>
+                        <option value="TN">TN</option>
+                        <option value="TX">TX</option>
+                        <option value="UT">UT</option>
+                        <option value="VT">VT</option>
+                        <option value="VA">VA</option>
+                        <option value="WA">WA</option>
+                        <option value="WV">WV</option>
+                        <option value="WI">WI</option>
+                        <option value="WY">WY</option>
+                    </select>
+                </div>
+                <div id="arvField" style="display:none" class="mb-5">
+                    <label class="form-label">After-Repair Value (ARV)</label>
+                    <input class="form-input" type="number" id="arv" placeholder="350000">
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">Estimated Project Timeline</label>
+                    <select class="form-select" id="project_timeline">
+                        <option value="">Select timeline</option>
+                        <option value="asap">ASAP (under contract)</option>
+                        <option value="1_30">1–30 days</option>
+                        <option value="30_60">30–60 days</option>
+                        <option value="60_plus">60+ days (planning)</option>
+                    </select>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="goStep(1)"
+                        class="py-4 px-6 rounded-xl font-bold text-base transition"
+                        style="background:var(--gray-200);color:var(--navy)">
+                        <i class="fas fa-arrow-left mr-2"></i> Back
+                    </button>
+                    <button type="button" onclick="goStep(3)" class="btn-gold py-4 flex-1 text-base">
+                        Continue to Financials <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
 
-    function toggleArvField(v) {
-      document.getElementById('arvField').style.display = v === 'fix_flip' || v === 'ground_up' ? 'block' : 'none';
-      // Show/hide primary finance fields based on loan type
-      var isPrimary = v === 'primary_home' || document.getElementById('investor_type').value === 'primary_home';
-      document.getElementById('primaryFinanceFields').style.display = isPrimary ? 'block' : 'none';
-    }
+            <!-- ── Step 3: Financials ── -->
+            <!-- Fixed: Removed duplicate style attribute -->
+            <div id="step3" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-black mb-6" style="color:var(--navy)"><i class="fas fa-dollar-sign mr-2"
+                        style="color:var(--gold)"></i>Loan & Financial Details</h2>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label class="form-label">Loan Amount Needed *</label>
+                        <input class="form-input" type="number" id="loan_amount" placeholder="250000" min="50000">
+                    </div>
+                    <div>
+                        <label class="form-label">Purchase Price</label>
+                        <input class="form-input" type="number" id="purchase_price" placeholder="200000">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label class="form-label">Renovation Budget</label>
+                        <input class="form-input" type="number" id="renovation_budget" placeholder="50000">
+                    </div>
+                    <div>
+                        <label class="form-label">Down Payment / Equity Available</label>
+                        <input class="form-input" type="number" id="down_payment_available" placeholder="50000">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label class="form-label">Credit Score Range *</label>
+                    <select class="form-select" id="credit_score_range">
+                        <option value="">Select range</option>
+                        <option value="760+">760+ (Excellent)</option>
+                        <option value="720-759">720–759 (Very Good)</option>
+                        <option value="680-719">680–719 (Good)</option>
+                        <option value="640-679">640–679 (Fair)</option>
+                        <option value="600-639">600–639 (Below Average)</option>
+                        <option value="below_600">Below 600</option>
+                    </select>
+                </div>
+                <!-- Primary home buyer: monthly debts -->
+                <div id="primaryFinanceFields" style="display:none">
+                    <div class="grid grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="form-label">Monthly Debt Payments</label>
+                            <input class="form-input" type="number" id="monthly_debts" placeholder="500">
+                            <p class="text-xs mt-1" style="color:var(--text-light)">Car, student loans, credit cards,
+                                etc.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Years at Current Job</label>
+                            <input class="form-input" type="number" id="years_employed" placeholder="3" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="goStep(2)"
+                        class="py-4 px-6 rounded-xl font-bold text-base transition"
+                        style="background:var(--gray-200);color:var(--navy)">
+                        <i class="fas fa-arrow-left mr-2"></i> Back
+                    </button>
+                    <button type="button" onclick="goStep(4)" class="btn-gold py-4 flex-1 text-base">
+                        Review Application <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
 
-    function gv(id) { return document.getElementById(id)?.value || ''; }
-    function fmt(v) { return v ? '$' + Number(v).toLocaleString() : '—'; }
+            <!-- ── Step 4: Review & Submit ── -->
+            <!-- Fixed: Removed duplicate style attribute -->
+            <div id="step4" style="display:none" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-black mb-2" style="color:var(--navy)"><i class="fas fa-check-circle mr-2"
+                        style="color:var(--gold)"></i>Review & Submit</h2>
+                <p class="text-sm mb-6" style="color:var(--text-light)">Please review your information before
+                    submitting.</p>
+                <div id="reviewSummary" class="rounded-2xl p-6 mb-6"
+                    style="background:var(--gray-50);border:1px solid var(--gray-200)"></div>
+                <div class="rounded-2xl p-5 mb-6"
+                    style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25)">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle mt-0.5" style="color:var(--gold)"></i>
+                        <p class="text-sm" style="color:var(--navy)">By submitting, you agree that Cielo Lending Source
+                            may contact
+                            you via phone and email regarding your application. <strong>No credit pull will be made at
+                                this
+                                stage.</strong> Your information is protected — read our <a href="/privacy"
+                                target="_blank"
+                                style="color:var(--gold-dark);font-weight:700;text-decoration:underline">Privacy
+                                Policy</a>.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-3 pt-3" style="border-top:1px solid rgba(201,168,76,0.15)">
+                        <a href="tel:+19499698829" class="inline-flex items-center gap-1.5 text-xs font-semibold"
+                            style="color:var(--gold-dark);text-decoration:none">
+                            <i class="fas fa-phone-alt"></i>(949) 969-8829
+                        </a>
+                        <a href="mailto:martini@mdhcielolending.com"
+                            class="inline-flex items-center gap-1.5 text-xs font-semibold"
+                            style="color:var(--gold-dark);text-decoration:none">
+                            <i class="fas fa-envelope"></i>martini@mdhcielolending.com
+                        </a>
+                        <a href="mailto:info@mdhcielolending.com"
+                            class="inline-flex items-center gap-1.5 text-xs font-semibold"
+                            style="color:var(--gold-dark);text-decoration:none">
+                            <i class="fas fa-envelope"></i>info@mdhcielolending.com
+                        </a>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="goStep(3)"
+                        class="py-4 px-6 rounded-xl font-bold text-base transition"
+                        style="background:var(--gray-200);color:var(--navy)">
+                        <i class="fas fa-arrow-left mr-2"></i> Back
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn-gold py-4 flex-1 text-base">
+                        <i class="fas fa-rocket mr-2"></i> Submit Application
+                    </button>
+                </div>
+            </div>
+        </form>
 
-    function buildReview() {
-      var isPrimary = gv('investor_type') === 'primary_home';
-      var rows = [
-        ['Name', gv('first_name') + ' ' + gv('last_name')],
-        ['Email', gv('email')],
-        ['Phone', gv('phone')],
-        ['Borrower Type', gv('investor_type').replace(/_/g, ' ')],
-        ['Loan Type', gv('loan_type').replace(/_/g, ' ')],
-        ['Property Type', gv('property_type').replace(/_/g, ' ')],
-        ['Property State', gv('property_state')],
-        ['Loan Amount', fmt(gv('loan_amount'))],
-        ['Purchase Price', fmt(gv('purchase_price'))],
-        ['Credit Score', gv('credit_score_range')],
-      ];
-      if (isPrimary) {
-        rows.push(['Employment Status', gv('employment_status').replace(/_/g, ' ')]);
-        rows.push(['Annual Income', fmt(gv('annual_income'))]);
-        rows.push(['First-Time Buyer', gv('first_time_buyer')]);
-        rows.push(['Loan Program', gv('home_loan_program').replace(/_/g, ' ')]);
-        rows.push(['Monthly Debts', fmt(gv('monthly_debts'))]);
-        rows.push(['Years Employed', gv('years_employed')]);
-      }
-      document.getElementById('reviewSummary').innerHTML = rows.map(function (r) {
-        return '<div class="flex justify-between py-2" style="border-bottom:1px solid var(--gray-200)"><span class="text-sm font-semibold" style="color:var(--navy)">' + r[0] + '</span><span class="text-sm" style="color:var(--text-light)">' + r[1] + '</span></div>';
-      }).join('');
-    }
+        <!-- Success message -->
+        <div id="successMsg" style="display:none" class="bg-white rounded-2xl p-10 text-center shadow-sm">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+                style="background:linear-gradient(135deg,var(--gold),var(--gold-dark))">
+                <i class="fas fa-check text-white text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-black mb-3" style="color:var(--navy)">Application Received!</h2>
+            <div id="scoreDisplay" class="mb-4"></div>
+            <p id="scoreMsg" class="text-base leading-relaxed mb-6" style="color:var(--text-light)"></p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8 text-sm">
+                <a href="tel:+19499698829" class="inline-flex items-center gap-2 font-semibold px-4 py-2 rounded-xl"
+                    style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold-dark);text-decoration:none">
+                    <i class="fas fa-phone-alt"></i>(949) 969-8829
+                </a>
+            </div>
+            <a href="/" class="btn-gold inline-flex items-center gap-2 px-8 py-4 text-base"
+                style="text-decoration:none">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+    </div>
 
-    // Fixed: Properly structured form submission handler
-    document.getElementById('applyForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      var btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';
+    <script>
+        // Initialize EmailJS with your public key
+        (function () {
+            emailjs.init("oqM8wnIWUsaljaSbX"); // Replace with your actual EmailJS public key
+        })();
 
-      var payload = {
-        first_name: gv('first_name'),
-        last_name: gv('last_name'),
-        email: gv('email'),
-        phone: gv('phone'),
-        investor_type: gv('investor_type'),
-        experience_years: gv('experience_years') || null,
-        deals_completed: gv('deals_completed') || null,
-        loan_type: gv('loan_type'),
-        loan_amount: Number(gv('loan_amount')),
-        property_type: gv('property_type'),
-        property_address: gv('property_address'),
-        property_state: gv('property_state'),
-        credit_score_range: gv('credit_score_range'),
-        down_payment_available: Number(gv('down_payment_available')) || null,
-        purchase_price: Number(gv('purchase_price')) || null,
-        renovation_budget: Number(gv('renovation_budget')) || null,
-        arv: Number(gv('arv')) || null,
-        project_timeline: gv('project_timeline'),
-        // Primary home buyer fields
-        employment_status: gv('employment_status') || null,
-        annual_income: Number(gv('annual_income')) || null,
-        first_time_buyer: gv('first_time_buyer') || null,
-        home_loan_program: gv('home_loan_program') || null,
-        monthly_debts: Number(gv('monthly_debts')) || null,
-        years_employed: Number(gv('years_employed')) || null,
-      };
+        var currentStep = 1;
+        var pcts = ['25%', '50%', '75%', '100%'];
 
-      try {
+        function goStep(n) {
+            document.getElementById('step' + currentStep).style.display = 'none';
+            document.getElementById('tab' + currentStep).classList.remove('active');
+            document.getElementById('tab' + currentStep).classList.add('done');
+            currentStep = n;
+            document.getElementById('step' + currentStep).style.display = 'block';
+            document.getElementById('tab' + currentStep).classList.add('active');
+            document.getElementById('progressBar').style.width = pcts[n - 1];
+            if (n === 4) buildReview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        await emailjs.send("service_mdz8r89", "template_cj4wsi8", payload);
+        function toggleBorrowerType(v) {
+            // Investor experience fields
+            document.getElementById('expFields').style.display = v === 'experienced' ? 'grid' : 'none';
+            // Primary home buyer fields
+            document.getElementById('primaryHomeFields').style.display = v === 'primary_home' ? 'block' : 'none';
+            // Auto-set loan type for primary home
+            if (v === 'primary_home') {
+                document.getElementById('loan_type').value = 'primary_home';
+                toggleArvField('primary_home');
+                document.getElementById('primaryFinanceFields').style.display = 'block';
+            } else {
+                if (document.getElementById('loan_type').value === 'primary_home') document.getElementById('loan_type').value = '';
+                document.getElementById('primaryFinanceFields').style.display = 'none';
+            }
+        }
 
-  </script>
-  <div class="text-center py-10">
-    <a href="https://mdhcielolending.com/" class="btn-gold inline-flex items-center gap-2 px-5 py-2 text-base"
-      style="text-decoration:none">
-      <i class="fas fa-arrow-left"></i> Back to Main Site
-    </a>
-  </div>
+        function toggleExp(v) { toggleBorrowerType(v); }
+
+        function toggleArvField(v) {
+            document.getElementById('arvField').style.display = v === 'fix_flip' || v === 'ground_up' ? 'block' : 'none';
+            // Show/hide primary finance fields based on loan type
+            var isPrimary = v === 'primary_home' || document.getElementById('investor_type').value === 'primary_home';
+            document.getElementById('primaryFinanceFields').style.display = isPrimary ? 'block' : 'none';
+        }
+
+        function gv(id) { return document.getElementById(id)?.value || ''; }
+        function fmt(v) { return v ? '$' + Number(v).toLocaleString() : '—'; }
+
+        function buildReview() {
+            var isPrimary = gv('investor_type') === 'primary_home';
+            var rows = [
+                ['Name', gv('first_name') + ' ' + gv('last_name')],
+                ['Email', gv('email')],
+                ['Phone', gv('phone')],
+                ['Borrower Type', gv('investor_type').replace(/_/g, ' ')],
+                ['Loan Type', gv('loan_type').replace(/_/g, ' ')],
+                ['Property Type', gv('property_type').replace(/_/g, ' ')],
+                ['Property State', gv('property_state')],
+                ['Loan Amount', fmt(gv('loan_amount'))],
+                ['Purchase Price', fmt(gv('purchase_price'))],
+                ['Credit Score', gv('credit_score_range')],
+            ];
+            if (isPrimary) {
+                rows.push(['Employment Status', gv('employment_status').replace(/_/g, ' ')]);
+                rows.push(['Annual Income', fmt(gv('annual_income'))]);
+                rows.push(['First-Time Buyer', gv('first_time_buyer')]);
+                rows.push(['Loan Program', gv('home_loan_program').replace(/_/g, ' ')]);
+                rows.push(['Monthly Debts', fmt(gv('monthly_debts'))]);
+                rows.push(['Years Employed', gv('years_employed')]);
+            }
+            document.getElementById('reviewSummary').innerHTML = rows.map(function (r) {
+                return '<div class="flex justify-between py-2" style="border-bottom:1px solid var(--gray-200)"><span class="text-sm font-semibold" style="color:var(--navy)">' + r[0] + '</span><span class="text-sm" style="color:var(--text-light)">' + r[1] + '</span></div>';
+            }).join('');
+        }
+
+        // Fixed: Properly structured form submission handler
+
+        // Pre-qualification score calculation
+        function calculatePrequalScore() {
+            var score = 50; // Base score
+            var creditScore = gv('credit_score_range');
+            var investorType = gv('investor_type');
+            var loanAmount = Number(gv('loan_amount')) || 0;
+            var downPayment = Number(gv('down_payment_available')) || 0;
+            var purchasePrice = Number(gv('purchase_price')) || 1;
+
+            // Credit score impact
+            if (creditScore === '760+') score += 25;
+            else if (creditScore === '720-759') score += 20;
+            else if (creditScore === '680-719') score += 15;
+            else if (creditScore === '640-679') score += 5;
+            else if (creditScore === '600-639') score -= 5;
+            else if (creditScore === 'below_600') score -= 15;
+
+            // Down payment impact (LTV ratio)
+            var downPaymentPercent = (downPayment / purchasePrice) * 100;
+            if (downPaymentPercent >= 25) score += 15;
+            else if (downPaymentPercent >= 20) score += 10;
+            else if (downPaymentPercent >= 15) score += 5;
+            else if (downPaymentPercent >= 10) score += 0;
+            else score -= 10;
+
+            // Experience bonus
+            if (investorType === 'experienced') {
+                var deals = Number(gv('deals_completed')) || 0;
+                if (deals >= 10) score += 10;
+                else if (deals >= 5) score += 5;
+            }
+
+            // Cap score between 0-100
+            return Math.max(0, Math.min(100, score));
+        }
+
+        function displayScore(score) {
+            var scoreDisplay = document.getElementById('scoreDisplay');
+            var scoreMsg = document.getElementById('scoreMsg');
+
+            var rating, color, message;
+            if (score >= 80) {
+                rating = 'Excellent';
+                color = '#22C55E';
+                message = 'Your application looks strong! Based on your profile, you have excellent chances of approval. Our team will review and contact you within 24 hours with a term sheet.';
+            } else if (score >= 60) {
+                rating = 'Good';
+                color = '#EAB308';
+                message = 'Your application shows good potential. We may need some additional documentation, but approval is likely. Expect to hear from us within 24-48 hours.';
+            } else if (score >= 40) {
+                rating = 'Fair';
+                color = '#F97316';
+                message = 'We have received your application. There may be some challenges to address, but we have options available. Our team will contact you to discuss the best path forward.';
+            } else {
+                rating = 'Needs Review';
+                color = '#EF4444';
+                message = 'Thank you for your application. We will need to review your situation more carefully, but we may have alternative programs that could work for you. We will be in touch within 48 hours.';
+            }
+
+            scoreDisplay.innerHTML = '<div style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;padding:20px;border-radius:16px;margin-bottom:16px;">' +
+                '<div style="font-size:0.875rem;font-weight:600;opacity:0.9;margin-bottom:4px;">Pre-Qualification Score</div>' +
+                '<div style="font-size:3rem;font-weight:800;">' + score + '/100</div>' +
+                '<div style="font-size:1.125rem;font-weight:700;margin-top:8px;">' + rating + '</div>' +
+                '</div>';
+
+            scoreMsg.textContent = message;
+        }
+
+        document.getElementById('applyForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';
+
+            var payload = {
+                first_name: gv('first_name'),
+                last_name: gv('last_name'),
+                email: gv('email'),
+                phone: gv('phone'),
+                investor_type: gv('investor_type'),
+                experience_years: gv('experience_years') || null,
+                deals_completed: gv('deals_completed') || null,
+                loan_type: gv('loan_type'),
+                loan_amount: Number(gv('loan_amount')),
+                property_type: gv('property_type'),
+                property_address: gv('property_address'),
+                property_state: gv('property_state'),
+                credit_score_range: gv('credit_score_range'),
+                down_payment_available: Number(gv('down_payment_available')) || null,
+                purchase_price: Number(gv('purchase_price')) || null,
+                renovation_budget: Number(gv('renovation_budget')) || null,
+                arv: Number(gv('arv')) || null,
+                project_timeline: gv('project_timeline'),
+                // Primary home buyer fields
+                employment_status: gv('employment_status') || null,
+                annual_income: Number(gv('annual_income')) || null,
+                first_time_buyer: gv('first_time_buyer') || null,
+                home_loan_program: gv('home_loan_program') || null,
+                monthly_debts: Number(gv('monthly_debts')) || null,
+                years_employed: Number(gv('years_employed')) || null,
+            };
+
+            try {
+
+                await emailjs.send("service_mdz8r89", "template_cj4wsi8", payload);
+
+                // Show success message and hide form
+                document.getElementById('applyForm').style.display = 'none';
+                document.getElementById('stepTabs').style.display = 'none';
+                document.getElementById('progressBar').parentElement.style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+
+                // Calculate and display pre-qualification score
+                var score = calculatePrequalScore();
+                displayScore(score);
+
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                alert('There was an error submitting your application. Please try again or contact us directly at (949) 969-8829.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-rocket mr-2"></i> Submit Application';
+            }
+        });
+
+
+    </script>
+    <div class="text-center py-10">
+        <a href="https://mdhcielolending.com/" class="btn-gold inline-flex items-center gap-2 px-5 py-2 text-base"
+            style="text-decoration:none">
+            <i class="fas fa-arrow-left"></i> Back to Main Site
+        </a>
+    </div>
 </body>
 
 </html>
