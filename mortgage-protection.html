@@ -199,7 +199,7 @@
           style="color:var(--gold-light);text-decoration:none">
           <i class="fas fa-phone-alt text-xs"></i> (949) 969-8829
         </a>
-        <a href="/apply" class="btn-gold px-5 py-2.5 text-sm" style="text-decoration:none">Loan Application</a>
+        <a href="https://www.mdhcielolending.com/apply.html" class="btn-gold px-5 py-2.5 text-sm" style="text-decoration:none">Loan Application</a>
       </div>
     </div>
   </nav>
@@ -526,7 +526,7 @@
   <script>
     // Initialize EmailJS with your Public Key
     (function () {
-      emailjs.init('p-9a2h2ilauypRY-d');
+      emailjs.init('oqM8wnIWUsaljaSbX');
     })();
 
     function submitMPForm(e) {
@@ -538,7 +538,7 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';
 
       // Send form using EmailJS
-      emailjs.sendForm('service_5hhbva6', 'template_rdhhdtj', '#mpForm')
+      emailjs.sendForm('service_mdz8r89', 'template_84icxlm', '#mpForm')
         .then(function (response) {
           console.log('EmailJS SUCCESS', response.status, response.text);
           document.getElementById('mpForm').style.display = 'none';
